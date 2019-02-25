@@ -1,0 +1,26 @@
+{
+  "name": "@reacted/use-file-upload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf ./lib && npm run build:lib && npm run build:types",
+    "build:lib": "NODE_ENV=production babel ./src --out-dir lib --extensions \".ts,.tsx\" --copy-files",
+    "build:types": "tsc --emitDeclarationOnly"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
+    "@talentui/get-babel-config": "^4.0.4",
+    "@types/react": "^16.8.4",
+    "react": "^16.8.3",
+    "typescript": "^3.3.3333"
+  },
+  "peerDependencies": {
+    "react": "^16.8.3"
+  }
+}
