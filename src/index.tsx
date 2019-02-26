@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 
 export interface UploadButtonProps {
   onSelect?: (f: FileList) => any;
@@ -47,17 +47,11 @@ function upload(
 /* 
 
 */
-function useFileUpload(
-  props: UploadButtonProps
-): [
-  React.RefObject<HTMLInputElement>,
-  () => void,
-  (e: React.SyntheticEvent<HTMLInputElement>) => any
-] {
-  const fileInput = useRef<HTMLInputElement>(null);
+function useFileUpload(props: UploadButtonProps): [JSX.Element, () => void] {
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleButtonClick = useCallback(() => {
-    if (fileInput.current !== null) {
-      fileInput.current.click();
+    if (inputRef.current !== null) {
+      inputRef.current.click();
     }
   }, []);
   const handleFileChange = useCallback(({ target }) => {
@@ -69,7 +63,19 @@ function useFileUpload(
     }
   }, []);
 
-  return [fileInput, handleButtonClick, handleFileChange];
+  const fileInput = useMemo(
+    () => (
+      <input
+        type="file"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+        ref={inputRef}
+      />
+    ),
+    []
+  );
+
+  return [fileInput, handleButtonClick];
 }
 
 export { useFileUpload as default };
