@@ -1,10 +1,8 @@
 import { useRef, useCallback } from 'react';
 
 export interface UploadButtonProps {
-  text?: string;
   onSelect?: (f: FileList) => any;
   url?: string;
-  className?: string;
   onUpload?: (response: fileUploadResponse[]) => any;
 }
 
