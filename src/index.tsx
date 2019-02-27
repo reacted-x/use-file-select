@@ -62,7 +62,7 @@ function useFileUpload(
     if (target.files !== null && typeof props.onSelect === 'function') {
       props.onSelect(target.files);
       if (typeof props.url === 'string') {
-        upload(props.url, target.fileData).then(props.onUpload);
+        upload(props.url, target.files).then(props.onUpload);
       }
     }
   }, []);
