@@ -4,6 +4,8 @@ export interface UploadButtonProps {
   onSelect?: (f: FileList) => any;
   url?: string;
   onUpload?: (response: fileUploadResponse[]) => any;
+  accept?: string;
+  multiple?: boolean;
 }
 
 export interface fileUploadResponse {
@@ -47,7 +49,9 @@ function upload(
 /* 
 
 */
-function useFileUpload(props: UploadButtonProps): [JSX.Element, () => void] {
+function useFileUpload(
+  props: UploadButtonProps = { multiple: false, accept: '*' }
+): [JSX.Element, () => void] {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleButtonClick = useCallback(() => {
     if (inputRef.current !== null) {
@@ -70,6 +74,8 @@ function useFileUpload(props: UploadButtonProps): [JSX.Element, () => void] {
         style={{ display: 'none' }}
         onChange={handleFileChange}
         ref={inputRef}
+        multiple={props.multiple}
+        accept={props.accept}
       />
     ),
     []
