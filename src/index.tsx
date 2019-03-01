@@ -65,7 +65,7 @@ function useFileUpload(
         upload(props.url, target.files).then(props.onUpload);
       }
     }
-  }, []);
+  }, [props.onSelect]);
 
   const fileInput = useMemo(
     () => (
