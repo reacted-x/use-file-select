@@ -2,8 +2,6 @@ import React, { useRef, useCallback, useMemo } from 'react';
 
 export interface UploadButtonProps {
   onSelect?: (f: FileList | File[]) => any;
-  url?: string;
-  onUpload?: (response: fileUploadResponse[]) => any;
   accept?: string;
   multiple?: boolean;
   limit?: number;
@@ -11,39 +9,21 @@ export interface UploadButtonProps {
   onError?: (msg: any) => any;
 }
 
-export interface fileUploadResponse {
-  DfsPath: string;
-  ClienUrl: string;
-}
-
 export interface MsgType {
   overSize: number,
   readError: number,
-  overLimit: number
+  overLimit: number,
+  networkFail: number
 }
 
 // 导出错误类型
 export  const msgType:MsgType = {
   overSize: 1,
   readError: 2,
-  overLimit: 3
+  overLimit: 3,
+  networkFail: 4
 } 
 
-// 读取文件显示预览的逻辑，可能用不到了
-const readFile = (
-  file: File,
-  handleError: (err: { type: number; msg: string }) => any
-): void => {
-  let reader = new FileReader();
-
-  reader.addEventListener('error', () => {
-    handleError({
-      type: 2,
-      msg: ''
-    });
-  });
-  reader.readAsDataURL(file);
-};
 
 //检测文件个数是否超出上限，如果超出，调用props.onError方法，对所有文件不做任何处理，是第一轮检测，
 const checkFileNumber = (files: FileList, limit?: number): boolean => {
@@ -77,40 +57,6 @@ const checkFileSizeLimit = (
   return correctFiles;
 };
 
-
-/* 处理数据上传
-url: 数据上传接口
-fileList: 数据上传对象列表
- */
-function upload(
-  url: string,
-  fileList: FileList
-): Promise<fileUploadResponse[]> {
-  let uploadTasks: Promise<fileUploadResponse>[] = [];
-  for (let i = 0; i < fileList.length; i++) {
-    let file = fileList[i];
-    let formData = new FormData();
-    formData.append('uploadImg', file);
-    uploadTasks.push(
-      fetch(url, {
-        method: 'POST',
-        credentials: 'include',
-        body: formData
-      }).then(res => {
-        return res.json();
-      })
-    );
-  }
-  return Promise.all(uploadTasks).then(ress => {
-    return ress.map(res => {
-      return {
-        DfsPath: res.DfsPath,
-        ClienUrl: res.ClienUrl
-      };
-    });
-  });
-}
-
 // hooks本身， 返回用来触发上传框的
 function useFileUpload(
   props: UploadButtonProps = { multiple: false, accept: '*' }
@@ -139,7 +85,7 @@ function useFileUpload(
     if (props.onSelect) {
       props.onSelect(correctFiles);;
     }
-  }, [props.onSelect, props.onUpload, props.url, props.limit, props.sizeLimit]);
+  }, [props.onSelect, props.limit, props.sizeLimit]);
 
   const fileInput = useMemo(
     () => (

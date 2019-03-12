@@ -3,8 +3,6 @@
 ```typescript
 export interface UploadButtonProps {
   onSelect?: (f: FileList | File[]) => any;
-  url?: string;
-  onUpload?: (response: fileUploadResponse[]) => any;
   accept?: string;
   multiple?: boolean;
   limit?: number;
@@ -16,12 +14,6 @@ export interface UploadButtonProps {
 ## 参数说明
 ### onSelect
 当用户选择了文件之后的回调，根据限制条件，只返回符合条件的文件列表 File[];
-
-### url
-上传文件接口的路径，
-
-### onUpload
-文件上传完成之后的回调，上传过程当中报错的话，加尝试调用onError方法
 
 ### accept
 上传接受的文件类型, [查看示例](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers)
@@ -53,6 +45,13 @@ export interface MsgType {
   readError: number,
   overLimit: number
 }
+
+export const msgType {
+  overSize: 1,
+  readError: 2,
+  overLimit: 3,
+  networkFail: 4
+}
 ```
 
 ### overSize
@@ -63,3 +62,6 @@ export interface MsgType {
 
 ### overLimit
 文件个数超出上限。
+
+### networkFail
+传输出错
