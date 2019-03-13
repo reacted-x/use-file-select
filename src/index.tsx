@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useMemo } from 'react';
 
 export interface UploadButtonProps {
-  onSelect?: (f: FileList | File[]) => any;
+  onSelect?: (f:File[]) => any;
   accept?: string;
   multiple?: boolean;
   limit?: number;
@@ -11,29 +11,25 @@ export interface UploadButtonProps {
 
 export interface MsgType {
   overSize: number,
-  readError: number,
   overLimit: number,
-  networkFail: number
 }
 
 // 导出错误类型
 export  const msgType:MsgType = {
   overSize: 1,
-  readError: 2,
-  overLimit: 3,
-  networkFail: 4
+  overLimit: 2,
 } 
 
 
 //检测文件个数是否超出上限，如果超出，调用props.onError方法，对所有文件不做任何处理，是第一轮检测，
-const checkFileNumber = (files: FileList, limit?: number): boolean => {
+const checkFileNumber = (files: File[], limit?: number): boolean => {
   if (!limit) return true;
   return files.length <= limit;
 };
 
 // 对文件体积进行检测，如果文件当中有超出体积的，对文件进行过滤，只处理体积在限制范围之内的， 同时如果有超体积文件，调用props.onError方法
 const checkFileSizeLimit = (
-  files: FileList,
+  files: File[],
   handleError: (err: { type: number; files: File[] }) => any,
   sizeLimit?: number,
 ): File[] => {
@@ -75,7 +71,7 @@ function useFileUpload(
   };
 
   const handleFileChange = useCallback(({ target }) => {
-    let files = target.files;
+    let files: File[] = Array.prototype.slice.call(target.files);
     if (!checkFileNumber(files, props.limit)) {
       handleError({ type: msgType.overLimit });
       return;
