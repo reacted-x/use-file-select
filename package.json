@@ -1,6 +1,6 @@
 {
-  "name": "@reacted/use-file-upload",
-  "version": "1.1.1",
+  "name": "@reacted/use-file-select",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
