@@ -57,11 +57,5 @@ export const msgType {
 ### overSize
 文件体积超过上限
 
-### readErorr
-文件读取错误
-
 ### overLimit
 文件个数超出上限。
-
-### networkFail
-传输出错
