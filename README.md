@@ -27,8 +27,6 @@ export interface UploadButtonProps {
 ### mutilple
 是否允许上传多个文件
 
-### limit
-文件个数的限制，如果选择的文件数量超出文件个数的限制，不执行任何处理，也不会调onSelect。会直接调用onError
 
 ### sizeLimit
 文件体积的限制， 如果选择的文件体积超过限制，但不超过个数上限，会调用onSelect，并且调onError
@@ -41,16 +39,11 @@ export interface UploadButtonProps {
 
 ```ts
 export interface MsgType {
-  overSize: number,
-  readError: number,
-  overLimit: number
+  overSize: number
 }
 
 export const msgType {
-  overSize: 1,
-  readError: 2,
-  overLimit: 3,
-  networkFail: 4
+  overSize: 1
 }
 ```
 
